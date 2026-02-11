@@ -34,13 +34,13 @@ const usePosts = () => {
         setPosts((prev) => [newPost, ...prev])
     }, [user])
 
-    const deletePost = (postId) =>{
+    const deletePost = useCallback((postId) =>{
         if(confirm("Удалить пост?")){
             setPosts((prev) => prev.filter((post) => post.id !== postId))
         }
-    }
+    }, [])
 
-    const toggleLike = (postId, userId) => {
+    const toggleLike = useCallback((postId, userId) => {
     setPosts(prevPosts => prevPosts.map(post => {
         if (post.id === postId) {
             const isLiked = post.likes.includes(userId);
@@ -53,7 +53,7 @@ const usePosts = () => {
         }
         return post;
     }));
-};
+}, [])
 
     useEffect(() => {
         saveItems("posts", posts)
