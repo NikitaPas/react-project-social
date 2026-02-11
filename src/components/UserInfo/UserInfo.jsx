@@ -1,15 +1,10 @@
-import { useContext, useMemo } from "react"
-import { UserContext } from "../../context/UserContext"
-import { PostContext } from "../../context/PostContext"
 
-const UserInfo = () =>{
-    const {
-        user
-    } = useContext(UserContext)
 
+const UserInfo = (props) =>{
     const {
-      myPosts,
-    } = useContext(PostContext)
+      user,
+      myPosts
+    } = props
 
     return (
         <div className="bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800 flex flex-col items-center sm:flex-row sm:justify-between">

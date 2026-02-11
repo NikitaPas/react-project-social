@@ -10,6 +10,8 @@ export const PostProvider = (props) => {
         posts,
         myPosts,
         createPost,
+        deletePost,
+        toggleLike
     } = usePosts()
 
     console.log(JSON.parse(localStorage.getItem('posts')))
@@ -19,6 +21,8 @@ export const PostProvider = (props) => {
                 posts,
                 myPosts,
                 createPost,
+                deletePost,
+                toggleLike,
             }}>
             {children}
         </PostContext.Provider>

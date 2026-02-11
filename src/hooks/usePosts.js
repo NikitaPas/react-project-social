@@ -11,7 +11,7 @@ const usePosts = () => {
         saveItems,
     } = useLocaleStorage()
 
-    const [posts, setPosts] = useState(() => getItems("posts", [{ id: 1, userId: "user1", text: "Попробуйте на вкус новый Coca-Cola", createdAt: Date.now.toString() }]))
+    const [posts, setPosts] = useState(() => getItems("posts", [{ id: 1, userId: "user1", text: "Попробуйте на вкус новый Coca-Cola", createdAt: new Date().toISOString(), likes: [] }]))
 
     const myPosts = useMemo(() => {
         if (!user) {
@@ -29,9 +29,31 @@ const usePosts = () => {
             userId: user.id,
             text,
             createdAt: new Date().toISOString(),
+            likes: [],
         }
         setPosts((prev) => [newPost, ...prev])
     }, [user])
+
+    const deletePost = (postId) =>{
+        if(confirm("Удалить пост?")){
+            setPosts((prev) => prev.filter((post) => post.id !== postId))
+        }
+    }
+
+    const toggleLike = (postId, userId) => {
+    setPosts(prevPosts => prevPosts.map(post => {
+        if (post.id === postId) {
+            const isLiked = post.likes.includes(userId);
+            return {
+                ...post,
+                likes: isLiked 
+                    ? post.likes.filter(id => id !== userId) // Убираем лайк
+                    : [...post.likes, userId] // Добавляем лайк
+            };
+        }
+        return post;
+    }));
+};
 
     useEffect(() => {
         saveItems("posts", posts)
@@ -40,7 +62,9 @@ const usePosts = () => {
     return {
         posts,
         createPost,
-        myPosts
+        myPosts,
+        deletePost,
+        toggleLike,
     }
 }
 
