@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { PostContext } from "../../context/PostContext";
+import { UserContext } from "../../context/UserContext";
 
 const PostItem = (props) =>{
     const {
@@ -7,9 +8,16 @@ const PostItem = (props) =>{
         post,
     } = props
 
-    const {deletePost, toggleLike} = useContext(PostContext)
+    const {
+      deletePost,
+      toggleLike,
+      } = useContext(PostContext)
 
-    const isLiked = post.likes?.includes(user.id);
+    const {
+      getUsernameById,
+    } = useContext(UserContext)
+
+    const isLiked = post.likes?.includes(user?.id);
     const likesCount = post.likes?.length || 0;
 
     const formattedDate = new Date(post.createdAt).toLocaleDateString('ru-RU', {
@@ -27,11 +35,11 @@ const PostItem = (props) =>{
         <div className="flex items-center gap-3">
           {/* Аватар пользователя */}
           <div className="w-10 h-10 rounded-full bg-[#0003cc] flex items-center justify-center text-white font-bold text-lg">
-            {user.login.charAt(0).toUpperCase()}
+            {getUsernameById(post.userId).charAt(0).toUpperCase()}
           </div>
           {/* Логин */}
           <span className="font-bold text-[#ffffff] text-base">
-            @{user.login}
+            @{getUsernameById(post.userId)}
           </span>
         </div>
         {/* Дата */}
@@ -61,7 +69,7 @@ const PostItem = (props) =>{
                         {likesCount > 0 && likesCount} Лайк
                     </span>
                 </button>
-            {post.userId === user.id && (
+            {post.userId === user?.id && (
             <button onClick={() => deletePost(post.id)} className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors hover: cursor-pointer">
               Удалить
             </button>

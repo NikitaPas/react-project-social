@@ -25,23 +25,20 @@ const SideBar = () => {
                 {isAuth ? (
                     <NavItem
                         className="hidden md:flex items-center justify-center h-12 mb-8 bg-blue-600 rounded-xl text-white font-bold"
-                        to="/"
+                        to="/myprofile"
                     > Hi, {user.login}</NavItem>
                 ) : (
-                    <NavItem
+                    <NavItem to="/myprofile"
                         className="hidden md:flex items-center justify-center h-12 mb-8 bg-blue-600 rounded-xl text-white font-bold"
                     >Profile</NavItem>
                 )}
 
-
-                {/* Основная область для твоего контента */}
                 <nav className="flex flex-1 flex-row md:flex-col justify-around md:justify-start gap-5">
                     <NavItem to=''>Message</NavItem>
                     <NavItem>Publications</NavItem>
                     <NavItem>Settings</NavItem>
                 </nav>
 
-                {/* Нижняя часть (на десктопе — настройки или выход) */}
                 <div className="hidden md:block mt-auto pt-4 border-t border-gray-100">
                     {isAuth ?
                         (<NavItem onClick={() => logout()}> Logout </NavItem>)

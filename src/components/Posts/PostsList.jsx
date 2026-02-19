@@ -1,5 +1,6 @@
 import PostItem from "./PostItem";
 
+
 const PostsList = (props) =>{
 
     const {
@@ -7,7 +8,6 @@ const PostsList = (props) =>{
         user,
     } = props
 
-    // Проверка на пустой массив, чтобы пользователь не видел пустой экран
     if (!posts || posts.length === 0) {
         return <p className="text-gray-500 text-center mt-10">Постов пока нет...</p>;
     }

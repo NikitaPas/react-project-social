@@ -37,6 +37,11 @@ export const UserProvider = (props) => {
         return newUser;
     }, [])
 
+    const getUsernameById = (id) =>{
+        const findUsernameById = registeredUsers.find((user) => user.id === id);
+        return findUsernameById.login;
+    }
+
     useEffect(() => {
         saveItems("users", registeredUsers)
     }, [registeredUsers])
@@ -47,7 +52,7 @@ export const UserProvider = (props) => {
 
     console.log(isAuth)
     console.log("Сработал useeffect на изменение registered users", JSON.parse(localStorage.getItem('users')))
-
+    console.log(getUsernameById("user1"))
     return (
         <UserContext.Provider
             value={{
@@ -58,6 +63,7 @@ export const UserProvider = (props) => {
                 register,
                 registeredUsers,
                 isUserCreated,
+                getUsernameById,
             }}>
             {children}
         </UserContext.Provider>

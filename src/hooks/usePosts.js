@@ -46,9 +46,7 @@ const usePosts = () => {
             const isLiked = post.likes.includes(userId);
             return {
                 ...post,
-                likes: isLiked 
-                    ? post.likes.filter(id => id !== userId) // Убираем лайк
-                    : [...post.likes, userId] // Добавляем лайк
+                likes: isLiked ? post.likes.filter(id => id !== userId)  : [...post.likes, userId] 
             };
         }
         return post;
