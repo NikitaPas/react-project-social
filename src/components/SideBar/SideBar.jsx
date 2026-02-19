@@ -35,7 +35,7 @@ const SideBar = () => {
 
                 <nav className="flex flex-1 flex-row md:flex-col justify-around md:justify-start gap-5">
                     <NavItem to=''>Message</NavItem>
-                    <NavItem>Publications</NavItem>
+                    <NavItem to="/">Publications</NavItem>
                     <NavItem>Settings</NavItem>
                 </nav>
 

@@ -6,8 +6,7 @@ import { UserContext } from "../context/UserContext"
 
 const MainPage = (props) =>{
     const {
-        user,
-        // isAuth
+        user
     } = useContext(UserContext)
     const isAuth = true
     const {posts} = useContext(PostContext)
@@ -17,15 +16,11 @@ const MainPage = (props) =>{
             <SideBar />
             <main className="flex-1 flex justify-center p-4 sm:p-8 md:ml-20 lg:ml-64">
                 <div className=" w-full max-w-4xl min-w-[430px] flex flex-col gap-8">
-                    {isAuth ? 
-                    (
-                        <div> <PostsList 
+                        <PostsList 
                         posts = {posts}
                         user = {user}
                     />
-                    </div>
-                    ) :
-                    (<p>Please LogIN or Register</p>)}
+
             </div>
             </main>
         </div>
