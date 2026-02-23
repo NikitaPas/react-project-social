@@ -5,10 +5,6 @@ import { PostContext } from "../context/PostContext"
 import { UserContext } from "../context/UserContext"
 
 const MainPage = (props) =>{
-    const {
-        user
-    } = useContext(UserContext)
-    const isAuth = true
     const {posts} = useContext(PostContext)
 
     return (
@@ -18,7 +14,6 @@ const MainPage = (props) =>{
                 <div className=" w-full max-w-4xl min-w-[430px] flex flex-col gap-8">
                         <PostsList 
                         posts = {posts}
-                        user = {user}
                     />
 
             </div>
