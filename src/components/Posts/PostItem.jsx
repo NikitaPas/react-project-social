@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { PostContext } from "../../context/PostContext";
 import { UserContext } from "../../context/UserContext";
+import { Link } from "react-router-dom";
 
 const PostItem = (props) =>{
     const {
@@ -19,6 +20,7 @@ const PostItem = (props) =>{
 
     const isLiked = post.likes?.includes(user?.id);
     const likesCount = post.likes?.length || 0;
+    const userName = getUsernameById(post.userId)
 
     const formattedDate = new Date(post.createdAt).toLocaleDateString('ru-RU', {
     day: 'numeric',
@@ -35,12 +37,14 @@ const PostItem = (props) =>{
         <div className="flex items-center gap-3">
           {/* Аватар пользователя */}
           <div className="w-10 h-10 rounded-full bg-[#0003cc] flex items-center justify-center text-white font-bold text-lg">
-            {getUsernameById(post.userId).charAt(0).toUpperCase()}
+            {userName.charAt(0).toUpperCase()}
           </div>
           {/* Логин */}
-          <span className="font-bold text-[#ffffff] text-base">
-            @{getUsernameById(post.userId)}
-          </span>
+          <Link to={`/profile/${post.userId}`}><span className="font-bold text-[#ffffff] text-base">
+            @{userName}
+          </span> 
+          </Link> 
+          
         </div>
         {/* Дата */}
         <span className="text-gray-400 text-sm">

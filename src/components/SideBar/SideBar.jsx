@@ -25,12 +25,12 @@ const SideBar = () => {
                 {isAuth ? (
                     <NavItem
                         className="hidden md:flex items-center justify-center h-12 mb-8 bg-blue-600 rounded-xl text-white font-bold"
-                        to="/myprofile"
+                        to={`/profile/${user.id}`}
                     > Hi, {user.login}</NavItem>
                 ) : (
-                    <NavItem to="/myprofile"
+                    <NavItem to="/register"
                         className="hidden md:flex items-center justify-center h-12 mb-8 bg-blue-600 rounded-xl text-white font-bold"
-                    >Profile</NavItem>
+                    >Register</NavItem>
                 )}
 
                 <nav className="flex flex-1 flex-row md:flex-col justify-around md:justify-start gap-5">

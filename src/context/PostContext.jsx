@@ -8,7 +8,7 @@ export const PostProvider = (props) => {
 
     const {
         posts,
-        myPosts,
+        getPosts,
         createPost,
         deletePost,
         toggleLike
@@ -19,7 +19,7 @@ export const PostProvider = (props) => {
         <PostContext.Provider
             value={{
                 posts,
-                myPosts,
+                getPosts,
                 createPost,
                 deletePost,
                 toggleLike,

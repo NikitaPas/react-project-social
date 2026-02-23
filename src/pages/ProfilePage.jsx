@@ -5,17 +5,24 @@ import { UserContext } from "../context/UserContext"
 import { PostContext } from "../context/PostContext"
 import PostForm from "../components/PostForm/PostForm"
 import PostsList from "../components/Posts/PostsList"
+import { useParams } from "react-router-dom"
 
 const ProfilePage = () => {
+
+    const { userId } = useParams();
     const {
-        user,
         isAuth,
+        getUserById,
+        user,
     } = useContext(UserContext)
 
+    const profileUser = getUserById(userId)
+
     const {
-      myPosts,
+      getPosts,
     } = useContext(PostContext)
 
+    const posts = getPosts(userId)
     return (
         <div className="flex min-h-screen bg-gray-950 text-white">
             <SideBar />
@@ -25,11 +32,11 @@ const ProfilePage = () => {
                         (
                             <div>
                                 <UserInfo
-                                user={user} 
-                                myPosts={myPosts} 
+                                user={profileUser} 
+                                posts={posts} 
                                 />
-                                <PostForm />
-                               <PostsList posts={myPosts} user={user} />
+                                { user.id === profileUser.id ?  (<PostForm />) : (<div></div>)}
+                               <PostsList posts={posts} user={profileUser} />
                             </div>
 
                         ) :

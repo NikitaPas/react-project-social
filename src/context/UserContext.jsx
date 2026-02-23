@@ -42,6 +42,11 @@ export const UserProvider = (props) => {
         return findUsernameById.login;
     }
 
+    const getUserById = (id) =>{
+        const profileUser = registeredUsers.find((user)=> user.id === id)
+        return profileUser;
+    }
+
     useEffect(() => {
         saveItems("users", registeredUsers)
     }, [registeredUsers])
@@ -64,6 +69,7 @@ export const UserProvider = (props) => {
                 registeredUsers,
                 isUserCreated,
                 getUsernameById,
+                getUserById,
             }}>
             {children}
         </UserContext.Provider>
