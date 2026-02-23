@@ -5,7 +5,6 @@ const PostsList = (props) =>{
 
     const {
         posts,
-        user,
     } = props
 
     if (!posts || posts.length === 0) {
@@ -18,7 +17,6 @@ const PostsList = (props) =>{
                 <PostItem 
                     key={post.id} 
                     post={post} 
-                    user={user} 
                 />
             ))}
         </div>

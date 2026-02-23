@@ -18,6 +18,8 @@ const ProfilePage = () => {
 
     const profileUser = getUserById(userId)
 
+    const isMyProfile = profileUser.id === user.id;
+
     const {
       getPosts,
     } = useContext(PostContext)
@@ -35,8 +37,8 @@ const ProfilePage = () => {
                                 user={profileUser} 
                                 posts={posts} 
                                 />
-                                { user.id === profileUser.id ?  (<PostForm />) : (<div></div>)}
-                               <PostsList posts={posts} user={profileUser} />
+                                { isMyProfile ?  (<PostForm />) : (<div></div>)}
+                               <PostsList posts={posts}/>
                             </div>
 
                         ) :

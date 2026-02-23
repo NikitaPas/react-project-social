@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 const PostItem = (props) =>{
     const {
-        user,
         post,
     } = props
 
@@ -16,8 +15,11 @@ const PostItem = (props) =>{
 
     const {
       getUsernameById,
+      user,
     } = useContext(UserContext)
 
+
+    const isMyPost = post.userId === user?.id;
     const isLiked = post.likes?.includes(user?.id);
     const likesCount = post.likes?.length || 0;
     const userName = getUsernameById(post.userId)
@@ -73,7 +75,7 @@ const PostItem = (props) =>{
                         {likesCount > 0 && likesCount} Лайк
                     </span>
                 </button>
-            {post.userId === user?.id && (
+            {isMyPost && (
             <button onClick={() => deletePost(post.id)} className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors hover: cursor-pointer">
               Удалить
             </button>
