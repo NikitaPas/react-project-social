@@ -1,33 +1,46 @@
-import { createContext, useEffect, useState, useCallback } from "react";
+import { createContext, useEffect, useState, useCallback, ReactNode, FC } from "react";
 import useLocaleStorage from "../hooks/useLocalStorage";
+import { IUser } from "../types/IUser";
 
-export const UserContext = createContext({})
+export interface UserContextType {
+    user: IUser | null;
+    loginUser: (data: {id: string, login: string}) => void;
+    isAuth: boolean;
+    logout: ()=> void;
+    register: (id: string, login: string) => IUser;
+    registeredUsers: IUser[];
+    isUserCreated: (login: string) => IUser | undefined;
+    getUsernameById: (id: string) => string;
+    getUserById: (id: string) => IUser | undefined;
+}
 
-export const UserProvider = (props) => {
-    const { children } = props
+
+export const UserContext = createContext<UserContextType | null>(null)
+
+export const UserProvider: FC<{children: ReactNode}> = ({children}) => {
     const {
         getItems,
         saveItems,
     } = useLocaleStorage()
 
-    const [registeredUsers, setRegisteredUsers] = useState(() => getItems("users", [{ id: "user1", login: "admin", password: "123", posts: [] }]))
+    const [registeredUsers, setRegisteredUsers] = useState<IUser[]>(() => getItems("users", [{ id: "user1", login: "admin", password: "123", posts: [] }]))
 
-    const [user, setUser] = useState(() => getItems("activeUser", null))
+    const [user, setUser] = useState<IUser | null>(() => getItems("activeUser", null))
 
     const isAuth = !!user
-    const loginUser = useCallback((data) => {
+    const loginUser = useCallback((data: { id: string; login: string; }) => {
         console.log(data)
         setUser({ id: data.id, login: data.login })
     }, [])
 
-    const isUserCreated = (loginToAuth) =>{
-        const findUser = registeredUsers.find((user) => user.login.toLowerCase() == loginToAuth.toLowerCase().trim()) ?? false
+    const isUserCreated = (loginToAuth: string) =>{
+        const findUser = registeredUsers.find((user) => user.login.toLowerCase() == loginToAuth.toLowerCase().trim());
         return findUser;
     }
 
     const logout = useCallback(() => setUser(null), [])
 
-    const register = useCallback((login, password) => {
+    const register = useCallback((login: string, password: string) => {
         const newUser = {
             id: crypto?.randomUUID() ?? Date.now().toString(),
             login: login,
@@ -37,12 +50,12 @@ export const UserProvider = (props) => {
         return newUser;
     }, [])
 
-    const getUsernameById = (id) =>{
+    const getUsernameById = (id: string)=>{
         const findUsernameById = registeredUsers.find((user) => user.id === id);
-        return findUsernameById.login;
+        return findUsernameById!.login;
     }
 
-    const getUserById = (id) =>{
+    const getUserById = (id: string) =>{
         const profileUser = registeredUsers.find((user)=> user.id === id)
         return profileUser;
     }
@@ -56,7 +69,6 @@ export const UserProvider = (props) => {
     }, [user])
 
     console.log(isAuth)
-    console.log("Сработал useeffect на изменение registered users", JSON.parse(localStorage.getItem('users')))
     console.log(getUsernameById("user1"))
     return (
         <UserContext.Provider

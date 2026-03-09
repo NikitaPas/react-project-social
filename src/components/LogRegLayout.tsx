@@ -1,8 +1,14 @@
-const LogRegLayout = (props) =>{
-    const {
+import { FC, ReactNode } from "react"
+
+type LogRegLayoutProps = {
+    children: ReactNode;
+    imageSrc: string;
+}
+
+const LogRegLayout: FC<LogRegLayoutProps> = ({
         children, 
         imageSrc ="src/assets/login.jpg",
-    } = props
+}) =>{
     
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>

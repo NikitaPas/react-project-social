@@ -7,7 +7,7 @@ const SideBar = () => {
         isAuth,
         user,
         logout,
-    } = useContext(UserContext)
+    } = useContext(UserContext) as {isAuth: boolean, user: {login: string, id: string}, logout: ()=> void}
 
     return (
         <aside className="
@@ -31,7 +31,7 @@ const SideBar = () => {
                     <nav className="flex flex-1 flex-row md:flex-col justify-around md:justify-start gap-5">
                     <NavItem to=''>Message</NavItem>
                     <NavItem to="/">Publications</NavItem>
-                    <NavItem>Settings</NavItem>
+                    <NavItem to=''>Settings</NavItem>
                     </nav>
                     </div>
                     

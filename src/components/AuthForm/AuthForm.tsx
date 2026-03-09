@@ -1,24 +1,25 @@
 import InputField from "../InputField/InputField"
 import Button from "../Button/Button"
 import { useState, useEffect, useContext, useRef } from "react"
-import { UserContext } from "../../context/UserContext"
+import { UserContext, UserContextType } from "../../context/UserContext"
 import { Link } from "react-router-dom"
+import { IUser } from "../../types/IUser"
 
 const AuthForm = () => {
 
     const {
         loginUser,
         isUserCreated,
-    } = useContext(UserContext)
+    } = useContext(UserContext) as UserContextType
 
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('')
+    const [login, setLogin] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [error, setError] = useState<string>('')
 
-    const loginRef = useRef(null)
-    const passwordRef = useRef(null)
+    const loginRef = useRef<HTMLInputElement>(null)
+    const passwordRef = useRef<HTMLInputElement>(null)
 
-    const onSubmit = (event) => {
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (login.trim().length === 0 || password.trim().length === 0) {
             return setError('Заполните все поля')
@@ -54,7 +55,7 @@ const AuthForm = () => {
                     ref={loginRef}
                     isInvalid={!!error && error.includes("логином")}
                     placeholder="Login"
-                    onInput={(event) => setLogin(event.target.value)}
+                    onChange={(event) => setLogin(event.target.value)}
                 >
                     Login
                 </InputField>
@@ -64,7 +65,7 @@ const AuthForm = () => {
                     ref={passwordRef}
                     isInvalid={!!error && error.includes("пароль")}
                     placeholder="Password"
-                    onInput={(event) => setPassword(event.target.value)}
+                    onChange={(event) => setPassword(event.target.value)}
                 >
                     Password
                 </InputField>

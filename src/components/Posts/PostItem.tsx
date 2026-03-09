@@ -1,22 +1,26 @@
-import { useContext } from "react";
+import { FC, useContext } from "react";
 import { PostContext } from "../../context/PostContext";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
+import { IPost } from "../../types/IPost";
 
-const PostItem = (props) =>{
-    const {
-        post,
-    } = props
+type PostItemProps = {
+  post: IPost;
+}
+
+const PostItem: FC<PostItemProps> = ({
+  post,
+}) =>{
 
     const {
       deletePost,
       toggleLike,
-      } = useContext(PostContext)
+      } = useContext(PostContext) as {deletePost: (postId: string) => void, toggleLike: (postId: string, userId: string) => void} // рефактор после PostContext to tsx;
 
     const {
       getUsernameById,
       user,
-    } = useContext(UserContext)
+    } = useContext(UserContext) as {getUsernameById: (id: string) => string, user: {login: string, id: string}} // рефактор после UserContext to tsx;
 
 
     const isMyPost = post.userId === user?.id;
@@ -65,7 +69,7 @@ const PostItem = (props) =>{
               💬 Комментировать
             </button>
             <button 
-                    onClick={() => toggleLike(post.id, user.id)}
+                    onClick={() => user && toggleLike(post.id, user.id)}
                     className={`text-sm font-medium flex items-center gap-1.5 transition-all active:scale-125 ${
                         isLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
                     }`}

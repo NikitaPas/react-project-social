@@ -11,7 +11,7 @@ const usePosts = () => {
         saveItems,
     } = useLocaleStorage()
 
-    const [posts, setPosts] = useState(() => getItems("posts", [{ id: 1, userId: "user1", text: "Попробуйте на вкус новый Coca-Cola", createdAt: new Date().toISOString(), likes: [] }]))
+    const [posts, setPosts] = useState(() => getItems("posts", [{ id: "1", userId: "user1", text: "Попробуйте на вкус новый Coca-Cola", createdAt: new Date().toISOString(), likes: [] }]))
 
     const getPosts = useCallback((userId) => {
         if (!user) {

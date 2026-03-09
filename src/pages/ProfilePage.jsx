@@ -18,7 +18,7 @@ const ProfilePage = () => {
 
     const profileUser = getUserById(userId)
 
-    const isMyProfile = profileUser.id === user.id;
+    const isMyProfile = profileUser.id === user?.id;
 
     const {
       getPosts,

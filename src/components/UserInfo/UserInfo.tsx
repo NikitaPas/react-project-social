@@ -1,10 +1,17 @@
+import { FC } from "react"
+import { IUser } from "../../types/IUser"
+import { IPost } from "../../types/IPost";
 
 
-const UserInfo = (props) =>{
-    const {
+type UserInfoProps = {
+  user: IUser;
+  posts: IPost[]
+}
+
+const UserInfo: FC<UserInfoProps> = ({
       user,
-      posts
-    } = props
+      posts,
+}) =>{
 
     return (
         <div className="bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800 flex flex-col items-center sm:flex-row sm:justify-between">

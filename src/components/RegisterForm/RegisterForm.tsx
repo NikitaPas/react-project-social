@@ -1,29 +1,30 @@
 import InputField from "../InputField/InputField"
 import Button from "../Button/Button"
 import { useContext, useEffect, useState, useRef } from "react"
-import { UserContext } from "../../context/UserContext"
+import { UserContext, UserContextType } from "../../context/UserContext"
 import { Link, useNavigate } from "react-router-dom"
+import { IUser } from "../../types/IUser"
 
 const RegisterForm = () => {
     const {
         register,
         loginUser,
-        registeredUsers,
-    } = useContext(UserContext)
+        isUserCreated,
+    } = useContext(UserContext) as UserContextType
 
 
-    const [login, setLogin] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const [login, setLogin] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [confirmPassword, setConfirmPassword] = useState<string>('')
 
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string>('');
 
-    const loginRef = useRef(null)
-    const confirmPasswordRef = useRef(null)
+    const loginRef = useRef<HTMLInputElement>(null)
+    const confirmPasswordRef = useRef<HTMLInputElement>(null)
 
     const navigate = useNavigate();
 
-    const onSubmit = () => {
+    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (login.trim().length === 0 || password.trim().length === 0 || confirmPassword.trim().length === 0) {
             return setError('Заполните все поля')
@@ -33,7 +34,7 @@ const RegisterForm = () => {
             return setError("Пароли не совпадают")
         }
 
-        const isLoginTaken = registeredUsers.some((user) => user.login.toLowerCase() === login.toLowerCase().trim());
+        const isLoginTaken = !!isUserCreated(login);
 
         if (isLoginTaken) {
             loginRef.current?.focus();
@@ -57,7 +58,7 @@ const RegisterForm = () => {
                     ref={loginRef}
                     isInvalid={!!error && error.includes("логином")}
                     placeholder="Login"
-                    onInput={(event) => setLogin(event.target.value)}
+                    onChange={(event) => setLogin(event.target.value)}
                 >
                     Login
                 </InputField>
@@ -66,7 +67,7 @@ const RegisterForm = () => {
                     value={password}
                     isInvalid={!!error && error.includes("Пароли")}
                     placeholder="Password"
-                    onInput={(event) => setPassword(event.target.value)}
+                    onChange={(event) => setPassword(event.target.value)}
                 >
                     Password
                 </InputField>
@@ -76,7 +77,7 @@ const RegisterForm = () => {
                     ref={confirmPasswordRef}
                     isInvalid={!!error && error.includes("Пароли")}
                     placeholder="Repeat password"
-                    onInput={(event) => setConfirmPassword(event.target.value)}
+                    onChange={(event) => setConfirmPassword(event.target.value)}
                 >
                     Repeat password
                 </InputField>

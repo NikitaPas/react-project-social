@@ -1,12 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.jsx'
+import App from './App'
 import { BrowserRouter } from 'react-router-dom'
-import { UserProvider } from './context/UserContext.jsx'
-import { PostProvider } from './context/PostContext.jsx'
+import { UserProvider } from './context/UserContext'
+import { PostProvider } from './context/PostContext'
 
-createRoot(document.getElementById('root')).render(
+const container = document.getElementById('root') as HTMLElement;
+createRoot(container).render(
   <StrictMode>
     <UserProvider>
       <PostProvider>
@@ -15,5 +16,5 @@ createRoot(document.getElementById('root')).render(
         </BrowserRouter>
       </PostProvider>
     </UserProvider>
-  </StrictMode>,
-)
+  </StrictMode>
+);
