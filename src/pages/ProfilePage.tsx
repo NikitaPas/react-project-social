@@ -6,25 +6,38 @@ import { PostContext } from "../context/PostContext"
 import PostForm from "../components/PostForm/PostForm"
 import PostsList from "../components/Posts/PostsList"
 import { useParams } from "react-router-dom"
+import { IUser } from "../types/IUser"
+import { IPost } from "../types/IPost"
+import NavItem from "../components/NavItem/NavItem"
 
 const ProfilePage = () => {
 
-    const { userId } = useParams();
+    const { userId } = useParams<string>();
     const {
         isAuth,
         getUserById,
         user,
     } = useContext(UserContext)
 
-    const profileUser = getUserById(userId)
+    const {
+        getPosts,
+    } = useContext(PostContext)
+
+    const profileUser: IUser | undefined = userId ? getUserById(userId) : undefined;
+
+    const posts: IPost[] = userId ? getPosts(userId) : [];
+
+    if (!profileUser) {
+        return (
+            <div className="flex min-h-screen bg-gray-950 text-white justify-center items-center">
+                <h1 className="text-2xl font-bold">Пользователь не найден 😕</h1>
+                <NavItem to="/">На главную</NavItem>
+            </div>
+        );
+    }
 
     const isMyProfile = profileUser.id === user?.id;
 
-    const {
-      getPosts,
-    } = useContext(PostContext)
-
-    const posts = getPosts(userId)
     return (
         <div className="flex min-h-screen bg-gray-950 text-white">
             <SideBar />
@@ -34,11 +47,11 @@ const ProfilePage = () => {
                         (
                             <div>
                                 <UserInfo
-                                user={profileUser} 
-                                posts={posts} 
+                                    user={profileUser}
+                                    posts={posts}
                                 />
-                                { isMyProfile ?  (<PostForm />) : (<div></div>)}
-                               <PostsList posts={posts}/>
+                                {isMyProfile ? (<PostForm />) : (<div></div>)}
+                                <PostsList posts={posts} />
                             </div>
 
                         ) :

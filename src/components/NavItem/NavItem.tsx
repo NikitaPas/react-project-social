@@ -9,11 +9,11 @@ type NavItemProps = {
 }
 
 const NavItem: FC<NavItemProps> = ({
-        children,
-        className,
-        onClick,
-        to = "#",
-    }) => {
+    children,
+    className,
+    onClick,
+    to = "#",
+}) => {
 
     const content = Children.toArray(children).join("");
     const firstLetter = content.charAt(0).toUpperCase();

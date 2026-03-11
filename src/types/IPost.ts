@@ -3,5 +3,5 @@ export interface IPost {
     userId: string;
     text: string;
     createdAt: string;
-    likes?: string[];
+    likes: string[];
 }

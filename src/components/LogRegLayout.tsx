@@ -2,14 +2,14 @@ import { FC, ReactNode } from "react"
 
 type LogRegLayoutProps = {
     children: ReactNode;
-    imageSrc: string;
+    imageSrc?: string;
 }
 
 const LogRegLayout: FC<LogRegLayoutProps> = ({
-        children, 
-        imageSrc ="src/assets/login.jpg",
-}) =>{
-    
+    children,
+    imageSrc = "src/assets/login.jpg",
+}) => {
+
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 h-screen w-full'>
             <div className='hidden sm:block'>

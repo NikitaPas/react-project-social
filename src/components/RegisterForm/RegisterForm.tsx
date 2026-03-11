@@ -1,9 +1,9 @@
 import InputField from "../InputField/InputField"
 import Button from "../Button/Button"
 import { useContext, useEffect, useState, useRef } from "react"
-import { UserContext, UserContextType } from "../../context/UserContext"
+import { UserContext } from "../../context/UserContext"
 import { Link, useNavigate } from "react-router-dom"
-import { IUser } from "../../types/IUser"
+import { UserContextType } from "../../types/UserContextType"
 
 const RegisterForm = () => {
     const {

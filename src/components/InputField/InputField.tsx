@@ -1,6 +1,6 @@
-import { 
-  ChangeEvent, 
-  ReactNode, 
+import {
+  ChangeEvent,
+  ReactNode,
   Ref,
   FC
 } from "react";
@@ -15,7 +15,7 @@ type InputFieldProps = {
   ref?: Ref<HTMLInputElement>;
 };
 
-const InputField: FC<InputFieldProps> =(
+const InputField: FC<InputFieldProps> = (
   (
     {
       children,
@@ -30,10 +30,9 @@ const InputField: FC<InputFieldProps> =(
     const inputStyles = `
       rounded-lg bg-gray-700 mt-2 p-2 
       focus:bg-gray-800 focus:outline-none border-2 transition-colors
-      ${
-        isInvalid
-          ? "border-red-500"
-          : "border-transparent focus:border-blue-500"
+      ${isInvalid
+        ? "border-red-500"
+        : "border-transparent focus:border-blue-500"
       }
     `;
 

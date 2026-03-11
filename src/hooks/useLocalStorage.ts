@@ -1,5 +1,7 @@
+import { useCallback } from "react";
+
 const useLocaleStorage = () => {
-    const getItems = (key, defaultValue) => {
+    const getItems = useCallback(<T>(key: string, defaultValue: T): T => {
         const savedItems = localStorage.getItem(key)
         if (savedItems) {
             return JSON.parse(savedItems);
@@ -7,11 +9,11 @@ const useLocaleStorage = () => {
         else {
             return defaultValue;
         }
-    }
+    }, []);
 
-    const saveItems = (key, items) => {
+    const saveItems = useCallback(<T>(key: string, items: T): void => {
         localStorage.setItem(key, JSON.stringify(items));
-    }
+    }, []);
 
     return {
         getItems,

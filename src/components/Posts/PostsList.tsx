@@ -8,18 +8,18 @@ type PostsListProps = {
 
 const PostsList: FC<PostsListProps> = ({
     posts,
-}) =>{
+}) => {
 
     if (!posts || posts.length === 0) {
         return <p className="text-gray-500 text-center mt-10">Постов пока нет...</p>;
     }
 
-    return(
+    return (
         <div className="flex flex-col gap-4">
             {posts.map(post => (
-                <PostItem 
-                    key={post.id} 
-                    post={post} 
+                <PostItem
+                    key={post.id}
+                    post={post}
                 />
             ))}
         </div>

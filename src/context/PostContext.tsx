@@ -1,10 +1,10 @@
-import { createContext } from "react";
+import { createContext, FC, ReactNode } from "react";
 import usePosts from "../hooks/usePosts";
+import { PostContextType } from "../types/PostContextType";
 
-export const PostContext = createContext({})
+export const PostContext = createContext<PostContextType>({} as PostContextType)
 
-export const PostProvider = (props) => {
-    const { children } = props;
+export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     const {
         posts,
@@ -14,7 +14,6 @@ export const PostProvider = (props) => {
         toggleLike
     } = usePosts()
 
-    console.log(JSON.parse(localStorage.getItem('posts')))
     return (
         <PostContext.Provider
             value={{

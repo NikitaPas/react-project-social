@@ -4,16 +4,16 @@ import { UserContext } from "../context/UserContext"
 import { useNavigate } from "react-router-dom"
 import LogRegLayout from "../components/LogRegLayout"
 
-const AuthPage = () =>{
-    const {isAuth, user} = useContext(UserContext)
+const AuthPage = () => {
+    const { isAuth, user } = useContext(UserContext)
 
     const navigate = useNavigate()
 
-    if(isAuth){
-        
+    if (isAuth) {
+
     }
     useEffect(() => {
-        if(isAuth) navigate('/')
+        if (isAuth) navigate('/')
     }, [isAuth, navigate])
 
     console.log(user)

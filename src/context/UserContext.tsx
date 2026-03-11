@@ -1,23 +1,11 @@
 import { createContext, useEffect, useState, useCallback, ReactNode, FC } from "react";
 import useLocaleStorage from "../hooks/useLocalStorage";
 import { IUser } from "../types/IUser";
+import { UserContextType } from "../types/UserContextType";
 
-export interface UserContextType {
-    user: IUser | null;
-    loginUser: (data: {id: string, login: string}) => void;
-    isAuth: boolean;
-    logout: ()=> void;
-    register: (id: string, login: string) => IUser;
-    registeredUsers: IUser[];
-    isUserCreated: (login: string) => IUser | undefined;
-    getUsernameById: (id: string) => string;
-    getUserById: (id: string) => IUser | undefined;
-}
+export const UserContext = createContext<UserContextType>({} as UserContextType)
 
-
-export const UserContext = createContext<UserContextType | null>(null)
-
-export const UserProvider: FC<{children: ReactNode}> = ({children}) => {
+export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const {
         getItems,
         saveItems,
@@ -33,14 +21,14 @@ export const UserProvider: FC<{children: ReactNode}> = ({children}) => {
         setUser({ id: data.id, login: data.login })
     }, [])
 
-    const isUserCreated = (loginToAuth: string) =>{
+    const isUserCreated = (loginToAuth: string): IUser | undefined => {
         const findUser = registeredUsers.find((user) => user.login.toLowerCase() == loginToAuth.toLowerCase().trim());
         return findUser;
     }
 
     const logout = useCallback(() => setUser(null), [])
 
-    const register = useCallback((login: string, password: string) => {
+    const register = useCallback((login: string, password: string): IUser => {
         const newUser = {
             id: crypto?.randomUUID() ?? Date.now().toString(),
             login: login,
@@ -50,13 +38,13 @@ export const UserProvider: FC<{children: ReactNode}> = ({children}) => {
         return newUser;
     }, [])
 
-    const getUsernameById = (id: string)=>{
+    const getUsernameById = (id: string): string => {
         const findUsernameById = registeredUsers.find((user) => user.id === id);
         return findUsernameById!.login;
     }
 
-    const getUserById = (id: string) =>{
-        const profileUser = registeredUsers.find((user)=> user.id === id)
+    const getUserById = (id: string): IUser | undefined => {
+        const profileUser = registeredUsers.find((user) => user.id === id)
         return profileUser;
     }
 

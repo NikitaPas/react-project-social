@@ -10,25 +10,25 @@ type PostItemProps = {
 
 const PostItem: FC<PostItemProps> = ({
   post,
-}) =>{
+}) => {
 
-    const {
-      deletePost,
-      toggleLike,
-      } = useContext(PostContext) as {deletePost: (postId: string) => void, toggleLike: (postId: string, userId: string) => void} // рефактор после PostContext to tsx;
+  const {
+    deletePost,
+    toggleLike,
+  } = useContext(PostContext) as { deletePost: (postId: string) => void, toggleLike: (postId: string, userId: string) => void } // рефактор после PostContext to tsx;
 
-    const {
-      getUsernameById,
-      user,
-    } = useContext(UserContext) as {getUsernameById: (id: string) => string, user: {login: string, id: string}} // рефактор после UserContext to tsx;
+  const {
+    getUsernameById,
+    user,
+  } = useContext(UserContext) as { getUsernameById: (id: string) => string, user: { login: string, id: string } } // рефактор после UserContext to tsx;
 
 
-    const isMyPost = post.userId === user?.id;
-    const isLiked = post.likes?.includes(user?.id);
-    const likesCount = post.likes?.length || 0;
-    const userName = getUsernameById(post.userId)
+  const isMyPost = post.userId === user?.id;
+  const isLiked = post.likes?.includes(user?.id);
+  const likesCount = post.likes?.length || 0;
+  const userName = getUsernameById(post.userId)
 
-    const formattedDate = new Date(post.createdAt).toLocaleDateString('ru-RU', {
+  const formattedDate = new Date(post.createdAt).toLocaleDateString('ru-RU', {
     day: 'numeric',
     month: 'long',
     hour: '2-digit',
@@ -36,8 +36,8 @@ const PostItem: FC<PostItemProps> = ({
   });
 
 
-    return (
-        <div className="w-full mt-5 max-w-[100] bg-gray-900 border-gray-800 rounded-[20px] p-6 shadow-sm">
+  return (
+    <div className="w-full mt-5 max-w-[100] bg-gray-900 border-gray-800 rounded-[20px] p-6 shadow-sm">
       {/* Шапка поста */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -48,9 +48,9 @@ const PostItem: FC<PostItemProps> = ({
           {/* Логин */}
           <Link to={`/profile/${post.userId}`}><span className="font-bold text-[#ffffff] text-base">
             @{userName}
-          </span> 
-          </Link> 
-          
+          </span>
+          </Link>
+
         </div>
         {/* Дата */}
         <span className="text-gray-400 text-sm">
@@ -65,28 +65,27 @@ const PostItem: FC<PostItemProps> = ({
 
       {/* Футер поста */}
       <div className="flex gap-10 items-center pt-2">
-         <button className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors hover: cursor-pointer">
-              💬 Комментировать
-            </button>
-            <button 
-                    onClick={() => user && toggleLike(post.id, user.id)}
-                    className={`text-sm font-medium flex items-center gap-1.5 transition-all active:scale-125 ${
-                        isLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
-                    }`}
-                >
-                    <span className="text-lg">{isLiked ? '❤️' : '🤍'}</span>
-                    <span className={isLiked ? 'font-bold' : ''}>
-                        {likesCount > 0 && likesCount} Лайк
-                    </span>
-                </button>
-            {isMyPost && (
-            <button onClick={() => deletePost(post.id)} className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors hover: cursor-pointer">
-              Удалить
-            </button>
-          )}
+        <button className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors hover: cursor-pointer">
+          💬 Комментировать
+        </button>
+        <button
+          onClick={() => user && toggleLike(post.id, user.id)}
+          className={`text-sm font-medium flex items-center gap-1.5 transition-all active:scale-125 ${isLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
+            }`}
+        >
+          <span className="text-lg">{isLiked ? '❤️' : '🤍'}</span>
+          <span className={isLiked ? 'font-bold' : ''}>
+            {likesCount > 0 && likesCount} Лайк
+          </span>
+        </button>
+        {isMyPost && (
+          <button onClick={() => deletePost(post.id)} className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors hover: cursor-pointer">
+            Удалить
+          </button>
+        )}
       </div>
     </div>
-    )
+  )
 }
 
 export default PostItem

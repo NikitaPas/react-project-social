@@ -1,8 +1,8 @@
 import LogRegLayout from "../components/LogRegLayout"
 import RegisterForm from "../components/RegisterForm/RegisterForm"
 
-const RegisterPage = ()=>{
-    return(
+const RegisterPage = () => {
+    return (
         <LogRegLayout>
             <RegisterForm />
         </LogRegLayout>
