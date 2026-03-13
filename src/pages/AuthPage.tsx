@@ -9,9 +9,6 @@ const AuthPage = () => {
 
     const navigate = useNavigate()
 
-    if (isAuth) {
-
-    }
     useEffect(() => {
         if (isAuth) navigate('/')
     }, [isAuth, navigate])

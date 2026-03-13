@@ -1,8 +1,9 @@
-import { FC, useContext } from "react";
+import { FC, use, useContext, useState } from "react";
 import { PostContext } from "../../context/PostContext";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
 import { IPost } from "../../types/IPost";
+import PostComments from "./PostComments";
 
 type PostItemProps = {
   post: IPost;
@@ -15,18 +16,21 @@ const PostItem: FC<PostItemProps> = ({
   const {
     deletePost,
     toggleLike,
-  } = useContext(PostContext) as { deletePost: (postId: string) => void, toggleLike: (postId: string, userId: string) => void } // рефактор после PostContext to tsx;
+    addComment,
+  } = useContext(PostContext)
 
   const {
     getUsernameById,
     user,
-  } = useContext(UserContext) as { getUsernameById: (id: string) => string, user: { login: string, id: string } } // рефактор после UserContext to tsx;
+  } = useContext(UserContext)
 
+  const [isCommentInputVisible, setIsCommentInputVisible] = useState<boolean>(false);
+  const [commentText, setCommentText] = useState<string>("");
 
-  const isMyPost = post.userId === user?.id;
-  const isLiked = post.likes?.includes(user?.id);
-  const likesCount = post.likes?.length || 0;
-  const userName = getUsernameById(post.userId)
+  const isMyPost: boolean = post.userId === user?.id;
+  const isLiked: boolean = user?.id ? post.likes.includes(user?.id) : false;
+  const likesCount: number = post.likes.length || 0;
+  const userName: string = getUsernameById(post.userId)
 
   const formattedDate = new Date(post.createdAt).toLocaleDateString('ru-RU', {
     day: 'numeric',
@@ -34,6 +38,12 @@ const PostItem: FC<PostItemProps> = ({
     hour: '2-digit',
     minute: '2-digit',
   });
+
+  const handleAddComment = () => {
+    if (commentText.trim().length === 0 || !user?.id) return;
+    addComment(user.id, post.id, commentText)
+
+  }
 
 
   return (
@@ -64,26 +74,56 @@ const PostItem: FC<PostItemProps> = ({
       </div>
 
       {/* Футер поста */}
-      <div className="flex gap-10 items-center pt-2">
-        <button className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors hover: cursor-pointer">
-          💬 Комментировать
-        </button>
-        <button
-          onClick={() => user && toggleLike(post.id, user.id)}
-          className={`text-sm font-medium flex items-center gap-1.5 transition-all active:scale-125 ${isLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'
-            }`}
-        >
-          <span className="text-lg">{isLiked ? '❤️' : '🤍'}</span>
-          <span className={isLiked ? 'font-bold' : ''}>
-            {likesCount > 0 && likesCount} Лайк
-          </span>
-        </button>
-        {isMyPost && (
-          <button onClick={() => deletePost(post.id)} className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors hover: cursor-pointer">
-            Удалить
+      <div className="pt-2 border-t border-gray-800"> 
+        <div className="flex gap-10 items-center mb-4">
+          <button
+            className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
+            onClick={() => setIsCommentInputVisible(!isCommentInputVisible)}
+          >
+            💬 {isCommentInputVisible ? 'Отмена' : 'Комментировать'}
           </button>
+
+          <button
+            onClick={() => user && toggleLike(post.id, user.id)}
+            className={`text-sm font-medium flex items-center gap-1.5 transition-all active:scale-125 ${isLiked ? 'text-red-500' : 'text-gray-400 hover:text-red-400'}`}
+          >
+            <span className="text-lg">{isLiked ? '❤️' : '🤍'}</span>
+            <span className={isLiked ? 'font-bold' : ''}>
+              {likesCount > 0 && likesCount} Лайк
+            </span>
+          </button>
+
+          {isMyPost && (
+            <button onClick={() => deletePost(post.id)} className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors cursor-pointer">
+              Удалить
+            </button>
+          )}
+        </div>
+        {isCommentInputVisible && (
+          <div className="mt-4 flex gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+            <input
+              autoFocus
+              type="text"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Напишите комментарий..."
+              className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+            />
+            <button
+              onClick={() => {
+                handleAddComment();
+                setCommentText("");
+                setIsCommentInputVisible(false);
+              }}
+              className="bg-indigo-600 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-indigo-700 active:scale-95 transition-all"
+            >
+              Отправить
+            </button>
+          </div>
         )}
+        <PostComments post={post} />
       </div>
+
     </div>
   )
 }

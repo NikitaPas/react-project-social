@@ -11,7 +11,8 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
         getPosts,
         createPost,
         deletePost,
-        toggleLike
+        toggleLike,
+        addComment
     } = usePosts()
 
     return (
@@ -22,6 +23,7 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 createPost,
                 deletePost,
                 toggleLike,
+                addComment,
             }}>
             {children}
         </PostContext.Provider>

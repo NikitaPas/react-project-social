@@ -1,9 +1,11 @@
 import { IPost } from "./IPost";
+import { IUser } from "./IUser";
 
 export interface PostContextType {
         posts: IPost[];
-        getPosts: (userId: string) => IPost[];
+        getPosts: (userId: IUser['id']) => IPost[];
         createPost: (text: string) => void;
-        deletePost: (postId: string) => void;
-        toggleLike: (postId: string, userId: string) => void;
+        deletePost: (postId: IPost['id']) => void;
+        toggleLike: (postId: IPost['id'], userId: IUser['id']) => void;
+        addComment: (postId: IPost['id'], userId: IUser['id'], text: string) => void;
 }

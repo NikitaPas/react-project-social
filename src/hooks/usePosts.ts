@@ -3,17 +3,17 @@ import { useState, useMemo, useEffect, useContext, useCallback } from "react";
 import { UserContext } from "../context/UserContext";
 import useLocaleStorage from "./useLocalStorage";
 import { IPost } from "../types/IPost";
-import { UserContextType } from "../types/UserContextType";
+import { IUser } from "../types/IUser";
 
 const usePosts = () => {
-    const { user } = useContext(UserContext) as UserContextType
+    const { user } = useContext(UserContext)
 
     const {
         getItems,
         saveItems,
     } = useLocaleStorage()
 
-    const [posts, setPosts] = useState<IPost[]>(() => getItems("posts", [{ id: "1", userId: "user1", text: "Попробуйте на вкус новый Coca-Cola", createdAt: new Date().toISOString(), likes: [] }]))
+    const [posts, setPosts] = useState<IPost[]>(() => getItems("posts", [{ id: "1", userId: "user1", text: "Попробуйте на вкус новый Coca-Cola", createdAt: new Date().toISOString(), likes: [], comments: []}]))
 
     const getPosts = useCallback((userId: string): IPost[] => {
         if (!user) {
@@ -32,6 +32,7 @@ const usePosts = () => {
             text,
             createdAt: new Date().toISOString(),
             likes: [],
+            comments: [],
         }
         setPosts((prev) => [newPost, ...prev])
     }, [user])
@@ -55,8 +56,21 @@ const usePosts = () => {
         }));
     }, [])
 
+    const addComment = useCallback((userId: IUser['id'], postId: IPost['id'], text: string) => {
+        setPosts(prevPosts => prevPosts.map(post => {
+            if (post.id === postId) {
+                return {
+                    ...post,
+                    comments: [...(post.comments || []), { userId, text }]
+                }
+            }
+            return post
+        }))
+    }, [])
+
     useEffect(() => {
         saveItems("posts", posts)
+        console.log(posts)
     }, [posts])
 
     return {
@@ -65,6 +79,7 @@ const usePosts = () => {
         getPosts,
         deletePost,
         toggleLike,
+        addComment,
     }
 }
 

@@ -11,7 +11,7 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
         saveItems,
     } = useLocaleStorage()
 
-    const [registeredUsers, setRegisteredUsers] = useState<IUser[]>(() => getItems("users", [{ id: "user1", login: "admin", password: "123", posts: [] }]))
+    const [registeredUsers, setRegisteredUsers] = useState<IUser[]>(() => getItems("users", [{ id: "user1", login: "admin", password: "123"}]))
 
     const [user, setUser] = useState<IUser | null>(() => getItems("activeUser", null))
 
@@ -21,14 +21,14 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
         setUser({ id: data.id, login: data.login })
     }, [])
 
-    const isUserCreated = (loginToAuth: string): IUser | undefined => {
+    const isUserCreated = (loginToAuth: IUser['login']): IUser | undefined => {
         const findUser = registeredUsers.find((user) => user.login.toLowerCase() == loginToAuth.toLowerCase().trim());
         return findUser;
     }
 
     const logout = useCallback(() => setUser(null), [])
 
-    const register = useCallback((login: string, password: string): IUser => {
+    const register = useCallback((login: IUser['login'], password: IUser['password']): IUser => {
         const newUser = {
             id: crypto?.randomUUID() ?? Date.now().toString(),
             login: login,
@@ -38,18 +38,19 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return newUser;
     }, [])
 
-    const getUsernameById = (id: string): string => {
+    const getUsernameById = (id: IUser['id']): string => {
         const findUsernameById = registeredUsers.find((user) => user.id === id);
         return findUsernameById!.login;
     }
 
-    const getUserById = (id: string): IUser | undefined => {
+    const getUserById = (id: IUser['id']): IUser | undefined => {
         const profileUser = registeredUsers.find((user) => user.id === id)
         return profileUser;
     }
 
     useEffect(() => {
-        saveItems("users", registeredUsers)
+        saveItems("users", registeredUsers);
+        console.log(registeredUsers);
     }, [registeredUsers])
 
     useEffect(() => {
