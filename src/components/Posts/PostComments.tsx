@@ -1,7 +1,5 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import { IPost } from "../../types/IPost"
-import { IUser } from "../../types/IUser"
-import { UserContext } from "../../context/UserContext";
 import CommentItem from "./CommentItem";
 
 type PostCommentsProps = {

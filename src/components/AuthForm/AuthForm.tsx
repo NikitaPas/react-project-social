@@ -1,7 +1,7 @@
 import InputField from "../InputField/InputField"
 import Button from "../Button/Button"
 import { useState, useEffect, useContext, useRef } from "react"
-import { UserContext, UserContextType } from "../../context/UserContext"
+import { UserContext } from "../../context/UserContext"
 import { Link } from "react-router-dom"
 import { IUser } from "../../types/IUser"
 
@@ -10,7 +10,7 @@ const AuthForm = () => {
     const {
         loginUser,
         isUserCreated,
-    } = useContext(UserContext) as UserContextType
+    } = useContext(UserContext)
 
     const [login, setLogin] = useState<string>('');
     const [password, setPassword] = useState<string>('');

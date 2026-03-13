@@ -5,7 +5,7 @@ import Button from "../Button/Button"
 
 const PostForm = () => {
     const [text, setText] = useState<string>('');
-    const { createPost } = useContext(PostContext) as { createPost: (text: string) => void }; // убрать as после типизации PostContext
+    const { createPost } = useContext(PostContext)
 
     const clearPostText = text.trim();
     const isPostTextIsEmpty = clearPostText.length === 0;

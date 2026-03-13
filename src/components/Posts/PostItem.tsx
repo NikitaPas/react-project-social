@@ -1,4 +1,4 @@
-import { FC, use, useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { PostContext } from "../../context/PostContext";
 import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
@@ -74,14 +74,14 @@ const PostItem: FC<PostItemProps> = ({
       </div>
 
       {/* Футер поста */}
-      <div className="pt-2 border-t border-gray-800"> 
+      <div className="pt-2 border-t border-gray-800">
         <div className="flex gap-10 items-center mb-4">
-          <button
+          {user && (<button
             className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
             onClick={() => setIsCommentInputVisible(!isCommentInputVisible)}
           >
             💬 {isCommentInputVisible ? 'Отмена' : 'Комментировать'}
-          </button>
+          </button>)}
 
           <button
             onClick={() => user && toggleLike(post.id, user.id)}
