@@ -1,89 +1,92 @@
 import InputField from "../InputField/InputField"
 import Button from "../Button/Button"
-import { useState, useEffect, useContext, useRef } from "react"
+import { useContext } from "react"
 import { UserContext } from "../../context/UserContext"
-import { Link } from "react-router-dom"
+import { Form, Formik, FormikErrors } from "formik"
 import { Container, ErrorMessage, FooterText, StyledLink, Title } from "./AuthFormStyles"
 
-const AuthForm = () => {
-
-  const {
-    loginUser,
-    isUserCreated,
-  } = useContext(UserContext)
-
-  const [login, setLogin] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [error, setError] = useState<string>('')
-
-  const loginRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
-
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (login.trim().length === 0 || password.trim().length === 0) {
-      return setError('Заполните все поля')
-    }
-
-    const findUser = isUserCreated(login.trim())
-
-    if (!findUser) {
-      loginRef.current?.focus();
-      return setError("Пользователь с таким логином не найден")
-    }
-
-    if (findUser.password === password.trim()) {
-      loginUser({ id: findUser.id, login: login })
-    }
-    else {
-      passwordRef.current?.focus();
-      return setError('Неправильный пароль')
-    }
-  }
-
-  useEffect(() => { setError('') }, [login, password])
-
-
-  return (
-
-    <Container>
-      <form onSubmit={onSubmit}>
-        <Title>SIGN IN</Title>
-        <InputField
-          type="text"
-          value={login}
-          ref={loginRef}
-          isInvalid={!!error && error.includes("логином")}
-          placeholder="Login"
-          onChange={(event) => setLogin(event.target.value)}
-        >
-          Login
-        </InputField>
-        <InputField
-          type="password"
-          value={password}
-          ref={passwordRef}
-          isInvalid={!!error && error.includes("пароль")}
-          placeholder="Password"
-          onChange={(event) => setPassword(event.target.value)}
-        >
-          Password
-        </InputField>
-        {error && (
-          <ErrorMessage>{error}</ErrorMessage>
-        )}
-        <Button>Login</Button>
-         <FooterText>
-          Нет аккаунта?{' '}
-          <StyledLink
-            to="/register"
-          >
-            Зарегистрироваться
-          </StyledLink>
-        </FooterText>
-      </form>
-    </Container>
-  )
+interface LoginValues {
+  login: string;
+  password: string;
 }
 
-export default AuthForm
+const AuthForm = () => {
+  const { loginUser, isUserCreated } = useContext(UserContext);
+
+  const validate = (values: LoginValues) => {
+    const errors: FormikErrors<LoginValues> = {};
+
+    if (!values.login || !values.password) {
+      errors.login = 'Заполните все поля';
+    }
+
+    return errors;
+  };
+
+  return (
+    <Container>
+      <Formik
+        initialValues={{ login: '', password: '' }}
+        validate={validate}
+        onSubmit={(values, { setFieldError }) => {
+          const findUser = isUserCreated(values.login.trim());
+
+          if (!findUser) {
+            return setFieldError('login', "Пользователь с таким логином не найден");
+          }
+
+          if (findUser.password === values.password.trim()) {
+            loginUser({ id: findUser.id, login: values.login });
+          } else {
+            setFieldError('password', 'Неправильный пароль');
+          }
+        }}
+      >
+        {({ values, errors, touched, handleChange, handleBlur }) => (
+          <Form>
+            <Title>SIGN IN</Title>
+
+            <InputField
+              name="login"
+              type="text"
+              value={values.login}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              isInvalid={touched.login && !!errors.login}
+              placeholder="Login"
+            >
+              Login
+            </InputField>
+
+            <InputField
+              name="password"
+              type="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              isInvalid={touched.password && !!errors.password}
+              placeholder="Password"
+            >
+              Password
+            </InputField>
+
+            {(errors.login || errors.password) && (
+              <ErrorMessage>{errors.login || errors.password}</ErrorMessage>
+            )}
+
+            <Button type="submit">Login</Button>
+
+            <FooterText>
+              Нет аккаунта?{' '}
+              <StyledLink to="/register">
+                Зарегистрироваться
+              </StyledLink>
+            </FooterText>
+          </Form>
+        )}
+      </Formik>
+    </Container>
+  );
+};
+
+export default AuthForm;

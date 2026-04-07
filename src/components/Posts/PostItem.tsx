@@ -4,6 +4,7 @@ import { UserContext } from "../../context/UserContext";
 import { Link } from "react-router-dom";
 import { IPost } from "../../types/IPost";
 import PostComments from "./PostComments";
+import { useTranslation } from "react-i18next";
 
 type PostItemProps = {
   post: IPost;
@@ -30,9 +31,11 @@ const PostItem: FC<PostItemProps> = ({
   const isMyPost: boolean = post.userId === user?.id;
   const isLiked: boolean = user?.id ? post.likes.includes(user?.id) : false;
   const likesCount: number = post.likes.length || 0;
-  const userName: string = getUsernameById(post.userId)
+  const userName: string = getUsernameById(post.userId);
 
-  const formattedDate = new Date(post.createdAt).toLocaleDateString('ru-RU', {
+  const { t, i18n } = useTranslation();
+
+  const formattedDate = new Date(post.createdAt).toLocaleDateString('en-EN', {
     day: 'numeric',
     month: 'long',
     hour: '2-digit',
@@ -80,7 +83,7 @@ const PostItem: FC<PostItemProps> = ({
             className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors cursor-pointer"
             onClick={() => setIsCommentInputVisible(!isCommentInputVisible)}
           >
-            💬 {isCommentInputVisible ? 'Отмена' : 'Комментировать'}
+            💬 {isCommentInputVisible ? t('postItem.cancelWriteComment') : t('postItem.writeComment')}
           </button>)}
 
           <button
@@ -89,13 +92,13 @@ const PostItem: FC<PostItemProps> = ({
           >
             <span className="text-lg">{isLiked ? '❤️' : '🤍'}</span>
             <span className={isLiked ? 'font-bold' : ''}>
-              {likesCount > 0 && likesCount} Лайк
+              {likesCount > 0 && likesCount} {t('postItem.like')}
             </span>
           </button>
 
           {isMyPost && (
             <button onClick={() => deletePost(post.id)} className="text-sm font-medium text-gray-400 hover:text-red-500 transition-colors cursor-pointer">
-              Удалить
+              {t('postItem.delete')}
             </button>
           )}
         </div>
@@ -106,7 +109,7 @@ const PostItem: FC<PostItemProps> = ({
               type="text"
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
-              placeholder="Напишите комментарий..."
+              placeholder={t('postItem.writeCommentOpenField')}
               className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
             />
             <button

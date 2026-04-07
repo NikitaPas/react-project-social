@@ -2,9 +2,12 @@ import { useContext } from "react";
 import { useFormik } from "formik";
 import { PostContext } from "../../context/PostContext";
 import Button from "../Button/Button";
+import { useTranslation } from "react-i18next";
+import { FormContainer, StyledTextarea, Footer } from "./PostFormStyled";
 
 const PostForm = () => {
-  const { createPost } = useContext(PostContext);
+  const { createNewPost } = useContext(PostContext);
+  const { t } = useTranslation(); // Рекомендуемый способ использования i18next в компонентах
 
   const formik = useFormik({
     initialValues: {
@@ -12,35 +15,30 @@ const PostForm = () => {
     },
     onSubmit: (values, { resetForm }) => {
       const clearPostText = values.text.trim();
+      if (clearPostText.length === 0) return;
 
-      if (clearPostText.length === 0) {
-        return;
-      }
-
-      createPost(clearPostText);
-      resetForm(); 
+      createNewPost(clearPostText);
+      resetForm();
     },
   });
 
   const isPostTextEmpty = formik.values.text.trim().length === 0;
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="bg-gray-900 p-5 mt-4 rounded-xl border border-gray-800"
-    >
-      <textarea
+    <FormContainer onSubmit={formik.handleSubmit}>
+      <StyledTextarea
         name="text"
-        className="w-full bg-transparent min-h-[50px] text-white placeholder-gray-500 outline-none p-2 focus:ring-2 focus:ring-blue-500"
-        placeholder="Что у вас нового?"
+        placeholder={t("postForm.InputFieldPostForm")}
         value={formik.values.text}
         onChange={formik.handleChange}
       />
 
-      <div className="flex justify-end mt-2 border-t border-gray-800 pt-2">
-        <Button isDisabled={isPostTextEmpty}>Опубликовать</Button>
-      </div>
-    </form>
+      <Footer>
+        <Button type="submit" isDisabled={isPostTextEmpty}>
+          {t("postForm.publishButton")}
+        </Button>
+      </Footer>
+    </FormContainer>
   );
 };
 

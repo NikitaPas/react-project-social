@@ -6,6 +6,7 @@ import { PostContext } from "../context/PostContext"
 const MainPage = () => {
     const { posts } = useContext(PostContext)
 
+
     return (
         <div className="flex min-h-screen bg-gray-950 text-white">
             <SideBar />

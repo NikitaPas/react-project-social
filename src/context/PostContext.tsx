@@ -9,7 +9,7 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const {
         posts,
         getPosts,
-        createPost,
+        createNewPost,
         deletePost,
         toggleLike,
         addComment
@@ -20,7 +20,7 @@ export const PostProvider: FC<{ children: ReactNode }> = ({ children }) => {
             value={{
                 posts,
                 getPosts,
-                createPost,
+                createNewPost,
                 deletePost,
                 toggleLike,
                 addComment,

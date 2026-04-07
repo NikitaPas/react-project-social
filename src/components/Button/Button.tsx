@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 type ButtonProps = {
     children: ReactNode;
     isDisabled?: boolean;
+    type?: string;
 };
 
 const StyledButton = styled.button<ButtonProps>`
@@ -33,8 +34,8 @@ const StyledButton = styled.button<ButtonProps>`
         `}
 `;
 
-const Button: React.FC<ButtonProps> = ({ children, isDisabled = false }) => {
-    return <StyledButton disabled={isDisabled}>{children}</StyledButton>;
+const Button: React.FC<ButtonProps> = ({ children, isDisabled = false, type }) => {
+    return <StyledButton type={type} disabled={isDisabled}>{children}</StyledButton>;
 };
 
 export default Button;

@@ -58,8 +58,8 @@ const usePosts = () => {
     }, [posts])
 
     return {
-        posts,
-        createPost,
+        posts, 
+        createNewPost,
         getPosts,
         deletePost,
         toggleLike,

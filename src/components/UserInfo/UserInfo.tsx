@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { IUser } from "../../types/IUser"
 import { IPost } from "../../types/IPost";
+import { useTranslation } from "react-i18next";
 
 
 type UserInfoProps = {
@@ -12,6 +13,7 @@ const UserInfo: FC<UserInfoProps> = ({
   user,
   posts,
 }) => {
+      const { t } = useTranslation() 
 
   return (
     <div className="bg-gray-900 rounded-xl p-6 shadow-lg border border-gray-800 flex flex-col items-center sm:flex-row sm:justify-between">
@@ -24,14 +26,14 @@ const UserInfo: FC<UserInfoProps> = ({
           <h1 className="text-2xl font-bold text-white tracking-tight">
             @{user.login}
           </h1>
-          <p className="text-gray-400 text-sm">Пользователь приложения</p>
+          <p className="text-gray-400 text-sm">{t('userProfile.role')}</p>
         </div>
       </div>
 
       <div className="mt-4 sm:mt-0 flex gap-6 text-center">
         <div>
           <div className="text-xl font-bold text-white">{posts.length}</div>
-          <div className="text-xs text-gray-500 uppercase tracking-wider">Постов</div>
+          <div className="text-xs text-gray-500 uppercase tracking-wider">{t('userProfile.postsCount')}</div>
         </div>
 
       </div>
